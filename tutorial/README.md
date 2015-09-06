@@ -279,7 +279,8 @@ curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10/resum
 定期課金をキャンセルする場合は、下記のようなリクエストを送ることで可能です。現在のサイクルの終了日に定期課金が削除されます。
 
 ```
-curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10/cancel" -u "sk_test_c62fade9d045b54cd76d7036": -XPOST ```
+curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10/cancel" -u "sk_test_c62fade9d045b54cd76d7036": -XPOST
+```
 
 即座に定期課金を削除する場合は、下記のリクエストを送ります。
 
