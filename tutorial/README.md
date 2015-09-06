@@ -22,7 +22,7 @@ PAY.JP Checkoutは &lt;script&gt; タグを1行記述するだけで、 デザ�
 
 PAY.JP Checkout は、HTMLで下記のようなコードを書くだけで、決済ができるようになります。
 
-```
+```html
 <form action="/pay" method="post">
   <script src="https://checkout.pay.jp/" class="payjp-button" data-key=""></script>
 </form>
@@ -31,7 +31,7 @@ PAY.JP Checkout は、HTMLで下記のようなコードを書くだけで、決
 `data-key` には各ユーザーの公開キーを入力します。この例では、`/pay` に `payjp-token` パラメーターの値として token が送られます。
 サーバ側では、PAY.JPで作られたトークンを受け取り、下記のようなリクエストをするだけで実際の決済が行われます。
 
-```
+```shell
 $ curl "https://api.pay.jp/v1/charges" \
   -u "pk_test_0383a1b8f91e8a6e3ea0e2a9": \
   -d "amount=400" \
@@ -41,7 +41,7 @@ $ curl "https://api.pay.jp/v1/charges" \
 
 また、トークンを使ってカードを所有する顧客を作成したり、あなたの用途に合わせてさまざまな使い方ができます。
 
-```
+```shell
 $curl "https://api.pay.jp/v1/customers" \
   -u "sk_test_c62fade9d045b54cd76d7036": \
   -d "card=payjp_token"
@@ -52,7 +52,7 @@ $curl "https://api.pay.jp/v1/customers" \
 
 カード情報の入力だけでなく、他の情報もフォームから送信をする場合にカードの情報の入力次第で自動送信を行いたくないときがあります。そのような場合、
 
-```
+```html
 <form action="/purchase" method="post">
   <script src="https://checkout.pay.jp/" class="payjp-button" data-key="pk_test_0383a1b8f91e8a6e3ea0e2a9" data-lang="ja" data-partial="true"></script>
   <input type="text" name="other" value="他の情報" />
@@ -184,7 +184,7 @@ PAY.JPでは、定期課金を簡単に組み込むためのAPIを用意して�
 ### プランを作成
 まずはじめに定期課金を行うためのプランを作成します。プランでは、金額、課金日、トライアル日数など定期課金における細かい設定ができます。例えば、月額500円のノーマルプラン、月額2000円のゴールドプランというように、定期課金のタイプに応じて適したプランを使い分けることができます。
 
-```
+```shell
 curl "https://api.pay.jp/v1/plans" \
 -u "sk_test_c62fade9d045b54cd76d7036": \
 -d "id=normal" \
@@ -196,7 +196,7 @@ curl "https://api.pay.jp/v1/plans" \
 ### 顧客を登録して定期課金を行う
 次に実際に定期課金を行うために、課金の対象となる顧客を作成します。クレジットカード課金なので、カード情報の紐付いた顧客である必要があります。
 
-```
+```shell
 curl "https://api.pay.jp/v1/customers" \
 -u "sk_test_c62fade9d045b54cd76d7036": \
 -d "card=tok_8ec984635ae5d7a187f4f2bdda84" \
@@ -205,7 +205,7 @@ curl "https://api.pay.jp/v1/customers" \
 
 カード情報が正常であれば、顧客の作成に成功します。
 
-```
+```json
 {
   "cards": {
     "count": 1,
@@ -254,7 +254,7 @@ curl "https://api.pay.jp/v1/customers" \
 
 ここでかえってきた顧客ID "cus_2849e3adb18f8997760001007bbd" と課金を行いたいプランを紐付けて、定期課金リクエストを行います。
 
-```
+```shell
 curl "https://api.pay.jp/v1/subscriptions" -u "sk_test_c62fade9d045b54cd76d7036": -d "customer=cus_2849e3adb18f8997760001007bbd" -d "plan=normal"
 ```
 
@@ -271,20 +271,20 @@ curl "https://api.pay.jp/v1/subscriptions" -u "sk_test_c62fade9d045b54cd76d7036"
 ### 課金の失敗
 顧客のカードの有効期限が切れていたり、カードが不正であると、支払いが失敗します。この場合定期課金はストップし、再開リクエストがされるまで今後の課金は行われません。失敗した支払いを回収し、定期課金を再開するには、顧客のカードを有効なものに更新してから、再開リクエストを行います。
 
-```
+```shell
 curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10/resume" -u "sk_test_c62fade9d045b54cd76d7036": -XPOST
 ```
 
 ### キャンセル
 定期課金をキャンセルする場合は、下記のようなリクエストを送ることで可能です。現在のサイクルの終了日に定期課金が削除されます。
 
-```
+```shell
 curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10/cancel" -u "sk_test_c62fade9d045b54cd76d7036": -XPOST
 ```
 
 即座に定期課金を削除する場合は、下記のリクエストを送ります。
 
-```
+```shell
 curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10" -u "sk_test_c62fade9d045b54cd76d7036": -XDELETE
 ```
 
@@ -293,7 +293,7 @@ PAY.JPのAPI経由で起きたイベントをWebhookで受け取ることがで�
 [Webhookの設定](https://pay.jp/dashboard/settings#webhook) から送信したいエンドポイントを追加するだけで、PAY.JPのイベントがPOSTで送信されるようになります。
 例えば、顧客が作成された場合は下記のようなイベントが送信されます。
 
-```
+```json
 {
   "created": 1441426353,
   "data": {
