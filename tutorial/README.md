@@ -16,7 +16,7 @@ PAY.JP Checkoutは &lt;script&gt; タグを1行記述するだけで、 デザ�
 * CVC：123
 * カード名義：YUI ARAGAKI
 
-と記入して、「tokenを作成してみる」のボタンをクリックします。そうすると、カード情報による token が作成され、自動でフォームの送信が行われ、テスト決済が完了します。
+と記入して、「カード情報を入力する」のボタンをクリックします。そうすると、カード情報の代わりとなる token が作成されます。この token を使ってサーバー側でAPIを叩くだけで決済が完了します。
 
 ### 使い方
 
@@ -33,7 +33,7 @@ PAY.JP Checkout は、HTMLで下記のようなコードを書くだけで、決
 
 ```shell
 $ curl "https://api.pay.jp/v1/charges" \
-  -u "pk_test_0383a1b8f91e8a6e3ea0e2a9": \
+  -u "sk_test_c62fade9d045b54cd76d7036": \
   -d "amount=400" \
   -d "currency=jpy" \
   -d "card=payjp_token"
@@ -53,7 +53,7 @@ $curl "https://api.pay.jp/v1/customers" \
 カード情報の入力だけでなく、他の情報もフォームから送信をする場合にカードの情報の入力次第で自動送信を行いたくないときがあります。そのような場合、
 
 ```html
-<form action="/purchase" method="post">
+<form action="/pay" method="post">
   <script src="https://checkout.pay.jp/" class="payjp-button" data-key="pk_test_0383a1b8f91e8a6e3ea0e2a9" data-lang="ja" data-partial="true"></script>
   <input type="text" name="other" value="他の情報" />
 </form>
@@ -61,11 +61,11 @@ $curl "https://api.pay.jp/v1/customers" \
 
 というように `data-partial="true"` と設定することで自動的な送信を止めることができます。 token の取得後、ボタンには `✔ カード情報入力済み` と表示され、フォーム自体は送信されません。
 
-どちらの使用方法の場合でも、1ページ内に設置できる PAY.JP Checkout は1つのみです。 複数の支払いフォームを設置する場合は  token 決済 で紹介している JavaScript向けライブラリをご利用ください。
+現在1ページ内に設置できる PAY.JP Checkout は1つとなっています。
 
-### 設定可能なパラメータ
+### パラメータ
 
-PAY.JP Checkout を柔軟に利用するために以下のパラメータを利用することが出来ます。
+PAY.JP Checkout を柔軟に利用するために以下のパラメータを利用することができます。
 
 <table>
   <thead>
@@ -143,6 +143,16 @@ PAY.JP Checkout を柔軟に利用するために以下のパラメータを利�
   </tbody>
 </table>
 
+### 自由なフォーム
+PAY.JPではフォームデザインがあらかじめ用意されたPAY.JP Checkoutだけではなく、フォームデザインを自由に設定可能な `payjp.js` を用意しています。こちらはトークン取得に特化しており、PAY.JP CheckoutのようなUIやバリデーションの機能はもたずに、あなたの好きなデザインや挙動でPAY.JPを組み込むことができます。
+下記は実際の `payjp.js` を用いたサンプルページです。
+
+<a href="http://payjp.github.io/sample/payjp-js/index.html">payjp.js サンプルページ</a>
+
+「サンプルのカードを使う」をクリックし、送信を行うと、PAY.JP Checkoutと同様にトークンが作成されます。  
+このサンプルページのソースコードは下記にあるので、参考にして試してみてください。
+
+https://github.com/payjp/payjp.github.io/blob/master/sample/payjp-js/index.html
 
 
 ## テストカード
