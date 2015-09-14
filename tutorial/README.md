@@ -289,44 +289,111 @@ curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10" -u "
 ```
 
 ## Webhook
-PAY.JPのAPI経由で起きたイベントをWebhookで受け取ることができます。
-[Webhookの設定](https://pay.jp/dashboard/settings#webhook) から送信したいエンドポイントを追加するだけで、PAY.JPのイベントがPOSTで送信されるようになります。
-例えば、顧客が作成された場合は下記のようなイベントが送信されます。
+Webhookとは、あるサービスで発生したイベントの通知を、HTTP経由の外部URLで受け取る仕組みのことです。
+Webhookを使うと、例えば下記のようなPAY.JPで起きたイベントをあなたの任意のURLに対して、通知することができます。
 
-```json
+- 支払いが正常に行われたとき
+- 定期課金による引き落としが行われ、期間が更新されたとき
+- 定期課金がキャンセルされたとき
+
+PAY.JPの管理画面から送信先URLを追加するだけで、上記のようなイベントが自動的に通知されるようになります。
+
+### 設定
+PAY.JPにログインして、下記の管理画面からWebhookの送信先を追加できます。URLを入力し、イベントが送信されるモードをテストモードか本番モードかで選択し、追加を押せば完了です。Webhook送信先は複数追加することが可能です。
+
+https://pay.jp/dashboard/settings#webhook
+
+### リクエスト形式
+PAY.JPのWebhookはすべてPOSTリクエストで送信され、リクエストボディには、イベントのJSONデータが含まれています。
+
+### イベント
+下記は実際にPAY.JPから送信されるイベントの種類です。それぞれの内容に応じて、イベントのJSONが送信されます。 `type` はイベントのJSONデータに含まれます。
+
+| type | 内容 |
+|:-----------|------------:|
+| charge.succeeded |  支払いの成功 |
+| charge.failed |  支払いの失敗 |
+| charge.updated |  支払いの更新 |
+| charge.refunded |  支払いの返金 |
+| charge.captured |  支払いの確定 |
+| token.created |  トークンの作成 |
+| customer.created |  顧客の作成 |
+| customer.updated |  顧客の更新 |
+| customer.deleted |  顧客の削除 |
+| customer.card.created |  顧客のカード作成 |
+| customer.card.updated |  顧客のカード更新 |
+| customer.card.deleted |  顧客のカード削除 |
+| plan.created |  プランの作成 |
+| plan.updated |  プランの更新 |
+| plan.deleted |  プランの削除 |
+| subscription.created |  定期課金の作成 |
+| subscription.updated |  定期課金の更新 |
+| subscription.deleted |  定期課金の削除 |
+| subscription.paused |  定期課金の停止 |
+| subscription.resumed |  定期課金の再開 |
+| subscription.canceled |  定期課金のキャンセル |
+| subscription.renewed |  定期課金の期間更新 |
+
+下記は、5000円の支払いが成功したときにWebhookで送信されるイベントのデータ例です。
+
+```
 {
-  "created": 1441426353,
+  "created": 1442212986,
   "data": {
-    "cards": {
-      "count": 0,
-      "data": [],
-      "has_more": false,
-      "object": "list",
-      "url": "/v1/customers/cus_18442cdc36c4358dc9a9658243ea/cards"
+    "amount": 5000,
+    "amount_refunded": 0,
+    "captured": true,
+    "captured_at": 1442212986,
+    "card": {
+      "address_city": null,
+      "address_line1": null,
+      "address_line2": null,
+      "address_state": null,
+      "address_zip": null,
+      "address_zip_check": "unchecked",
+      "brand": "Visa",
+      "country": null,
+      "created": 1442212986,
+      "customer": null,
+      "cvc_check": "passed",
+      "exp_month": 1,
+      "exp_year": 2016,
+      "fingerprint": "e1d8225886e3a7211127df751c86787f",
+      "id": "car_f0984a6f68a730b7e1814ceabfe1",
+      "last4": "4242",
+      "name": null,
+      "object": "card"
     },
-    "created": 1441426352,
-    "default_card": null,
+    "created": 1442212986,
+    "currency": "jpy",
+    "customer": null,
     "description": null,
-    "email": null,
-    "id": "cus_18442cdc36c4358dc9a9658243ea",
+    "expired_at": null,
+    "failure_code": null,
+    "failure_message": null,
+    "id": "ch_bcb7776459913c743c20e9f9351d4",
     "livemode": false,
-    "object": "customer",
-    "subscriptions": {
-      "count": 0,
-      "data": [],
-      "has_more": false,
-      "object": "list",
-      "url": "/v1/customers/cus_18442cdc36c4358dc9a9658243ea/subscriptions"
-    }
+    "object": "charge",
+    "paid": true,
+    "refund_reason": null,
+    "refunded": false,
+    "subscription": null
   },
-  "id": "evnt_b75dafd6b272d2f0c7e283d1591",
+  "id": "evnt_5328acdbdb5294d6fc9cc903f8c",
   "livemode": false,
   "object": "event",
   "pending_webhooks": 1,
-  "type": "customer.created"
+  "type": "charge.succeeded"
 }
 ```
 
+`data` にはイベントの詳細内容が入ります。APIで返ってくるレスポンスと同様のJSONデータです。 `pending_webhooks` では、まだWebhookが正常に受信されていない送信先URLの数を示しています。
+
+### リトライ
+Webhookの送信先から `4xx` や `5xx` のステータスコードが返ってくる場合、Webhookは自動的にリトライを行います。リトライは3分間隔で、最大3回行われます。
+
+### 安全性
+本番環境でWebhookを使用する場合は、必ずHTTPS経由で受け取るようにしましょう。Webhookでは、顧客情報や支払いの詳細データなども送信されるため、HTTPSによる暗号化通信を強く推奨いたします。
 
 ## ライブラリ
 
