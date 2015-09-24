@@ -9,7 +9,7 @@ PAY.JP Checkoutは &lt;script&gt; タグを1行記述するだけで、 デザ�
 
 下記のリンク先のページにあるボタンを押して、実際のテスト決済を試してみましょう。
 
-<a href="https://payjp-static.s3-ap-northeast-1.amazonaws.com/checkout.html">PAY.JP Checkout サンプルページ</a>
+<a href="http://payjp.github.io/sample/payjp-checkout/">PAY.JP Checkout サンプルページ</a>
 
 * カード番号：4242 4242 4242 4242
 * 有効期限：12 / 20
@@ -147,7 +147,7 @@ PAY.JP Checkout を柔軟に利用するために以下のパラメータを利�
 PAY.JPではフォームデザインがあらかじめ用意されたPAY.JP Checkoutだけではなく、フォームデザインを自由に設定可能な `payjp.js` を用意しています。こちらはトークン取得に特化しており、PAY.JP CheckoutのようなUIやバリデーションの機能はもたずに、あなたの好きなデザインや挙動でPAY.JPを組み込むことができます。
 下記は実際の `payjp.js` を用いたサンプルページです。
 
-<a href="http://payjp.github.io/sample/payjp-js/index.html">payjp.js サンプルページ</a>
+<a href="http://payjp.github.io/sample/payjp-js/">payjp.js サンプルページ</a>
 
 「サンプルのカードを使う」をクリックし、送信を行うと、PAY.JP Checkoutと同様にトークンが作成されます。  
 このサンプルページのソースコードは下記にあるので、参考にして試してみてください。
