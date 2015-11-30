@@ -42,7 +42,7 @@ $ curl "https://api.pay.jp/v1/charges" \
 また、トークンを使ってカードを所有する顧客を作成したり、あなたの用途に合わせてさまざまな使い方ができます。
 
 ```shell
-$curl "https://api.pay.jp/v1/customers" \
+$ curl "https://api.pay.jp/v1/customers" \
   -u "sk_test_c62fade9d045b54cd76d7036": \
   -d "card=payjp_token"
 ```
@@ -149,7 +149,7 @@ PAY.JPではフォームデザインがあらかじめ用意されたPAY.JP Chec
 
 <a href="http://payjp.github.io/sample/payjp-js/">payjp.js サンプルページ</a>
 
-「サンプルのカードを使う」をクリックし、送信を行うと、PAY.JP Checkoutと同様にトークンが作成されます。  
+「サンプルのカードを使う」をクリックし、送信を行うと、PAY.JP Checkoutと同様にトークンが作成されます。
 このサンプルページのソースコードは下記にあるので、参考にして試してみてください。
 
 https://github.com/payjp/payjp.github.io/blob/master/sample/payjp-js/index.html
@@ -195,7 +195,7 @@ PAY.JPでは、定期課金を簡単に組み込むためのAPIを用意して�
 まずはじめに定期課金を行うためのプランを作成します。プランでは、金額、課金日、トライアル日数など定期課金における細かい設定ができます。例えば、月額500円のノーマルプラン、月額2000円のゴールドプランというように、定期課金のタイプに応じて適したプランを使い分けることができます。
 
 ```shell
-curl "https://api.pay.jp/v1/plans" \
+$ curl "https://api.pay.jp/v1/plans" \
 -u "sk_test_c62fade9d045b54cd76d7036": \
 -d "id=normal" \
 -d "amount=500" \
@@ -207,7 +207,7 @@ curl "https://api.pay.jp/v1/plans" \
 次に実際に定期課金を行うために、課金の対象となる顧客を作成します。クレジットカード課金なので、カード情報の紐付いた顧客である必要があります。
 
 ```shell
-curl "https://api.pay.jp/v1/customers" \
+$ curl "https://api.pay.jp/v1/customers" \
 -u "sk_test_c62fade9d045b54cd76d7036": \
 -d "card=tok_8ec984635ae5d7a187f4f2bdda84" \
 -d "email=subscriber@pay.jp"
@@ -265,7 +265,7 @@ curl "https://api.pay.jp/v1/customers" \
 ここでかえってきた顧客ID "cus_2849e3adb18f8997760001007bbd" と課金を行いたいプランを紐付けて、定期課金リクエストを行います。
 
 ```shell
-curl "https://api.pay.jp/v1/subscriptions" -u "sk_test_c62fade9d045b54cd76d7036": -d "customer=cus_2849e3adb18f8997760001007bbd" -d "plan=normal"
+$ curl "https://api.pay.jp/v1/subscriptions" -u "sk_test_c62fade9d045b54cd76d7036": -d "customer=cus_2849e3adb18f8997760001007bbd" -d "plan=normal"
 ```
 
 ### 課金日
@@ -283,20 +283,20 @@ curl "https://api.pay.jp/v1/subscriptions" -u "sk_test_c62fade9d045b54cd76d7036"
 定期課金が失敗したかどうかは、後述する[Webhook](https://github.com/payjp/user-docs/tree/master/tutorial#webhook)を使って受け取ることができます。
 
 ```shell
-curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10/resume" -u "sk_test_c62fade9d045b54cd76d7036": -XPOST
+$ curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10/resume" -u "sk_test_c62fade9d045b54cd76d7036": -XPOST
 ```
 
 ### キャンセル
 定期課金をキャンセルする場合は、下記のようなリクエストを送ることで可能です。現在のサイクルの終了日に定期課金が削除されます。
 
 ```shell
-curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10/cancel" -u "sk_test_c62fade9d045b54cd76d7036": -XPOST
+$ curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10/cancel" -u "sk_test_c62fade9d045b54cd76d7036": -XPOST
 ```
 
 即座に定期課金を削除する場合は、下記のリクエストを送ります。
 
 ```shell
-curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10" -u "sk_test_c62fade9d045b54cd76d7036": -XDELETE
+$ curl "https://api.pay.jp/v1/subscriptions/sub_573a09399fa5bcc53b58911afd10" -u "sk_test_c62fade9d045b54cd76d7036": -XDELETE
 ```
 
 ## Webhook
