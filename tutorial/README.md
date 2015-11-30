@@ -149,7 +149,7 @@ PAY.JPではフォームデザインがあらかじめ用意されたPAY.JP Chec
 
 <a href="http://payjp.github.io/sample/payjp-js/">payjp.js サンプルページ</a>
 
-「サンプルのカードを使う」をクリックし、送信を行うと、PAY.JP Checkoutと同様にトークンが作成されます。  
+「サンプルのカードを使う」をクリックし、送信を行うと、PAY.JP Checkoutと同様にトークンが作成されます。
 このサンプルページのソースコードは下記にあるので、参考にして試してみてください。
 
 https://github.com/payjp/payjp.github.io/blob/master/sample/payjp-js/index.html
