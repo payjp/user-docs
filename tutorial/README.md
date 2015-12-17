@@ -140,6 +140,11 @@ PAY.JP Checkout を柔軟に利用するために以下のパラメータを利�
       <td>token の生成に失敗した時に、HTTPステータスコードを第一引数、エラーの内容を第二引数として呼び出される関数。関数名で指定</td>
       <td>なし</td>
     </tr>
+    <tr>
+      <td>data-name-placeholder</td>
+      <td>カード名義に表示されるplaceholderの値</td>
+      <td>YUI ARAGAKI</td>
+    </tr>
   </tbody>
 </table>
 
