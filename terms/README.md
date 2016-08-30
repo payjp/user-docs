@@ -1,5 +1,6 @@
 # Terms
 
-[加盟店向け利用規約](merchant.md)   
-[購入者向け利用規約](customer.md)   
-[e-scott利用規約](e-scott.md)   
+[PAY.JP API 利用規約](merchant.md)  
+[PAY.JP 加盟店利用規約](merchant_vm.txt)  
+[PAY ID 利用規約](customer.md)  
+[e-SCOTT Smartサービス利用規約 for PAY.JP](e-scott.md)
