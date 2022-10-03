@@ -1,1 +1,1 @@
-[こちら](https://github.com/payjp/user-docs/blob/master/terms/e-SCOTT_Smart_for_PAY.JP%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E5%88%A9%E7%94%A8%E8%A6%8F%E7%B4%84_%23SKT16_20210616%23.pdf)に移動しました
+[こちら](https://github.com/payjp/user-docs/blob/master/terms/e-SCOTT_Smart_for_PAY.JP%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E5%88%A9%E7%94%A8%E8%A6%8F%E7%B4%84.pdf)に移動しました
